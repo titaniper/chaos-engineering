@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  litmusportal-server:
+    image: litmuschaos/litmusportal-server:latest
+    container_name: litmusportal-server
+    ports:
+      - "9022:9002"
+    environment:
+      - MONGO_SERVER=litmus-mongo:27017
+      - PORTAL_SCOPE=cluster
+      - JWT_SECRET=my$uper$ecureJWT$ecretKey1234567890!@#$%^&*()_+
+      - ADMIN_PASSWORD=qwer1234
+    depends_on:
+      - litmus-mongo
+
+  litmusportal-frontend:
+    image: litmuschaos/litmusportal-frontend:latest
+    container_name: litmusportal-frontend
+    ports:
+      - "9095:9091"
+    environment:
+      - REACT_APP_SERVER_URL=http://localhost:9022
+    depends_on:
+      - litmusportal-server
+
+  litmus-mongo:
+    image: mongo:4.2.8
+    container_name: litmus-mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+    driver: local
