@@ -1,0 +1,3 @@
+[submodule "projects/chaosjs"]
+	path = projects/chaosjs
+	url = git@github.com:titaniper/chaosjs.git
